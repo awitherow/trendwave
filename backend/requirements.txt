@@ -38,6 +38,7 @@ SQLAlchemy==1.4.45
 sqlparse==0.4.2
 starlette==0.22.0
 tomli==2.0.1
+tweepy==4.12.1
 typing_extensions==4.4.0
 urllib3==1.26.12
 uvicorn==0.20.0
