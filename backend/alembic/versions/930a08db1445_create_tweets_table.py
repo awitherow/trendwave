@@ -20,7 +20,7 @@ def upgrade() -> None:
     op.create_table('tweets',
                     sa.Column('id', sa.Integer, primary_key=True),
                     sa.Column('text', sa.String),
-                    sa.Column('approved', sa.Boolean)
+                    sa.Column('approved', sa.Boolean, default=False)
                     )
 
 

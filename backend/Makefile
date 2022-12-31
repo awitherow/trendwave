@@ -13,3 +13,6 @@ run_migrations:
 
 run_dev_db:
 	psql nfp_boilerplate_dev
+
+dev_server:
+	uvicorn main:app --reload
