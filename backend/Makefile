@@ -14,5 +14,5 @@ run_migrations:
 run_dev_db:
 	psql nfp_boilerplate_dev
 
-dev_server:
-	uvicorn main:app --reload
+dev:
+	docker run -p 8000:8000 -it --rm --name nfp-backend-running nfp-backend
