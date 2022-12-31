@@ -26,6 +26,7 @@ engine = sa.create_engine(DATABASE_URL)
 
 class TweetIn(BaseModel):
     text: str
+    approved: bool
 
 
 class Tweet(BaseModel):
@@ -71,6 +72,6 @@ async def read_tweets():
 @app.post("/tweets/", response_model=Tweet)
 async def create_tweet(tweet: TweetIn):
     print(tweet)
-    query = tweets.insert().values(text=tweet.text)
+    query = tweets.insert().values(text=tweet.text, approved=tweet.approved)
     last_record_id = await database.execute(query)
     return {**tweet.dict(), "id": last_record_id}
