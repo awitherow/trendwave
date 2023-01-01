@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import database
+from database import database
 
 from routers import users
 from routers import tweets
@@ -9,9 +9,9 @@ from routers import twitter_auth
 
 
 app = FastAPI()
-app.include_routers(users.router)
-app.include_routers(tweets.router)
-app.include_routers(twitter_auth.router)
+app.include_routers(users.router)  # type: ignore
+app.include_routers(tweets.router)  # type: ignore
+app.include_routers(twitter_auth.router)  # type: ignore
 
 origins = [
     "http://localhost",

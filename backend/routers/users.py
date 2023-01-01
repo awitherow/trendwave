@@ -57,7 +57,7 @@ def get_password_hash(password):
 
 async def get_user(username: str):
     query = users.select().where(users.c.username == username)
-    user = await database.fetch_one(query)
+    user = await database.fetch_one(query) or {}
     return UserInDB(username=user["username"], hashed_password=user["hashed_password"])
 
 
@@ -89,13 +89,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
+        username: str = payload.get("sub")  # type: ignore
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(username=username) or {}
     except JWTError:
         raise credentials_exception
-    user = await get_user(username=token_data.username)
+    user = await get_user(username=token_data.username or "")
     if user is None:
         raise credentials_exception
     return user

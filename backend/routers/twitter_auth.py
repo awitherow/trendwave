@@ -1,21 +1,25 @@
+import os
+from ..utility.TwitterUtil import TwitterUtil
 import argparse
 import tweepy
-import utility.Config as Config
-import utility.ErrorResponse as ErrorResponse
+from ..utility import ErrorResponse
 from fastapi import APIRouter
+from dotenv import load_dotenv
 
-from utility.TwitterUtil import TwitterUtil
+load_dotenv()
+
 
 router = APIRouter()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-host", "--host",
-                    help="REST service hostname", default=Config.CONNECT.HOST)
+                    help="REST service hostname", default='localhost')
 parser.add_argument("-port", "--port",  help="REST service port",
-                    default=Config.CONNECT.PORT, type=int)
+                    default=8000, type=int)
 
 args = parser.parse_args()
-twitter = TwitterUtil(Config.KEYS.TW_API_KEY, Config.KEYS.TW_API_SEC)
+twitter = TwitterUtil(
+    os.environ['TWITTER_CLIENT_ID'], os.environ['TWITTER_CLIENT_SECRET'])
 
 
 @router.get('/twitter/request_token')
@@ -28,7 +32,7 @@ def request_token(oauth_callback: str):
     """
     try:
         return twitter.request_token(oauth_callback)
-    except tweepy.TweepError as e:
+    except tweepy.TweepyException as e:
         print('Twitter Exception: ', e)
         raise ErrorResponse.tw_request_invalid
     except Exception:
@@ -45,6 +49,6 @@ def access_token(oauth_token: str, oauth_verifier: str):
     """
     try:
         return twitter.access_token(oauth_token, oauth_verifier)
-    except tweepy.TweepError as e:
+    except tweepy.TweepyException as e:
         print('Twitter Exception: ', e)
         raise ErrorResponse.tw_access_invalid
