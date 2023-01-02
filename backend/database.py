@@ -1,6 +1,7 @@
 import os
 import databases
 import sqlalchemy as sa
+from sqlalchemy import ForeignKey
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,6 +17,12 @@ tweets = sa.Table('tweets',
                   sa.Column('id', sa.Integer, primary_key=True),
                   sa.Column('text', sa.String),
                   sa.Column('approved', sa.Boolean))
+
+schedule = sa.Table('schedule',
+                    metadata,
+                    sa.Column('id', sa.Integer, primary_key=True),
+                    sa.Column('time', sa.DateTime),
+                    sa.Column('tweet_id', ForeignKey('tweets.id')))
 
 users = sa.Table(
     "users",

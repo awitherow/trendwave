@@ -3,6 +3,7 @@ from ..database import database
 from pydantic import BaseModel
 from typing import List
 from fastapi import APIRouter
+from ..database import tweets
 
 
 router = APIRouter()
